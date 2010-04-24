@@ -83,6 +83,18 @@ Javadoc for HSQLDB.
 %description javadoc -l pl.UTF-8
 Dokumentacja javadoc do HSQLDB.
 
+%package source
+Summary:	Source code of %{srcname}
+Summary(pl.UTF-8):	Kod źródłowy %{srcname}
+Group:		Documentation
+Requires:	jpackage-utils >= 1.7.5-2
+
+%description source
+Source code of %{srcname}.
+
+%description source -l pl.UTF-8
+Kod źródłowy %{srcname}.
+
 %package demo
 Summary:	Demo for HSQLDB
 Summary(pl.UTF-8):	Pliki demonstracyjne dla HSQLDB
@@ -150,6 +162,8 @@ export CLASSPATH
 
 %ant -f build/build.xml hsqldb javadoc
 
+%jar cf %{srcname}.src.jar -C src .
+
 %install
 rm -rf $RPM_BUILD_ROOT
 # jar
@@ -174,12 +188,19 @@ install -d $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/server.properties
 install %{SOURCE3} $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/webserver.properties
 install %{SOURCE4} $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/sqltool.rc
+
 # lib
 install -d $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/lib
 install lib/functions $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/lib
 ln -sf %{_javadir}/servlet-api.jar $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/lib/servlet.jar
+
 # data
 install -d $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/data
+
+# source
+install -d $RPM_BUILD_ROOT%{_javasrcdir}
+cp -a %{srcname}.src.jar $RPM_BUILD_ROOT%{_javasrcdir}/%{srcname}.src.jar
+
 # demo
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 install demo/*.sh 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
@@ -230,6 +251,10 @@ ln -nfs %{srcname}-%{version} %{_javadocdir}/%{srcname}
 %defattr(644,root,root,755)
 %{_javadocdir}/%{srcname}-%{version}
 %ghost %{_javadocdir}/%{srcname}
+
+%files source
+%defattr(644,root,root,755)
+%{_javasrcdir}/%{srcname}.src.jar
 
 %files demo
 %defattr(644,root,root,755)
