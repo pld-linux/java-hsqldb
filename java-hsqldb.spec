@@ -8,15 +8,16 @@
 %define	use_jdk	java5-sun
 
 %define		ver	%(echo %{version} | tr . _)
+%define		srcname	hsqldb
 %include	/usr/lib/rpm/macros.java
 Summary:	SQL relational database engine written in Java
 Summary(pl.UTF-8):	Silnik relacyjnych baz danych SQL napisany w Javie
-Name:		hsqldb
+Name:		java-hsqldb
 Version:	1.8.1.1
 Release:	1
 License:	BSD-like
 Group:		Libraries/Java
-Source0:	http://downloads.sourceforge.net/hsqldb/%{name}_%{ver}.zip
+Source0:	http://downloads.sourceforge.net/hsqldb/%{srcname}_%{ver}.zip
 # Source0-md5:	4114ba2e6aba58e6bfd3fa283d7dbc37
 Source1:	%{name}-standard.cfg
 Source2:	%{name}-standard-server.properties
@@ -119,7 +120,7 @@ HSQLDB server.
 Serwer HSQLDB.
 
 %prep
-%setup -q -n %{name}
+%setup -q -n %{srcname}
 %undos build/build.xml
 %patch0 -p0
 %patch1 -p1
@@ -153,67 +154,67 @@ export CLASSPATH
 rm -rf $RPM_BUILD_ROOT
 # jar
 install -d $RPM_BUILD_ROOT%{_javadir}
-install lib/%{name}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
-ln -s  %{name}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
+install lib/%{srcname}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}-%{version}.jar
+ln -s  %{srcname}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}.jar
 
 # bin
 install -d $RPM_BUILD_ROOT%{_bindir}
-install bin/runUtil.sh $RPM_BUILD_ROOT%{_bindir}/%{name}RunUtil
+install bin/runUtil.sh $RPM_BUILD_ROOT%{_bindir}/%{srcname}RunUtil
 
 # sysv init
 install -d $RPM_BUILD_ROOT/etc/rc.d/init.d
-install bin/%{name} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install bin/%{srcname} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{srcname}
 
 # config
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/%{name}
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/%{srcname}
 
 # serverconfig
-install -d $RPM_BUILD_ROOT%{_localstatedir}/lib/%{name}
-install %{SOURCE2} $RPM_BUILD_ROOT%{_localstatedir}/lib/%{name}/server.properties
-install %{SOURCE3} $RPM_BUILD_ROOT%{_localstatedir}/lib/%{name}/webserver.properties
-install %{SOURCE4} $RPM_BUILD_ROOT%{_localstatedir}/lib/%{name}/sqltool.rc
+install -d $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}
+install %{SOURCE2} $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/server.properties
+install %{SOURCE3} $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/webserver.properties
+install %{SOURCE4} $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/sqltool.rc
 # lib
-install -d $RPM_BUILD_ROOT%{_localstatedir}/lib/%{name}/lib
-install lib/functions $RPM_BUILD_ROOT%{_localstatedir}/lib/%{name}/lib
-ln -sf %{_javadir}/servlet-api.jar $RPM_BUILD_ROOT%{_localstatedir}/lib/%{name}/lib/servlet.jar
+install -d $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/lib
+install lib/functions $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/lib
+ln -sf %{_javadir}/servlet-api.jar $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/lib/servlet.jar
 # data
-install -d $RPM_BUILD_ROOT%{_localstatedir}/lib/%{name}/data
+install -d $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/data
 # demo
 install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/demo
 install demo/*.sh 	$RPM_BUILD_ROOT%{_datadir}/%{name}/demo
 install demo/*.html 	$RPM_BUILD_ROOT%{_datadir}/%{name}/demo
 
 # javadoc
-install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
-cp -a doc/src/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
-ln -s %{name}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{name} # ghost symlink
+install -d $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
+cp -a doc/src/* $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
+ln -s %{srcname}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{srcname} # ghost symlink
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %pre server
-%groupadd -g 169 %{name}
-%useradd -u 169 -g %{name} -s /bin/sh -d %{_localstatedir}/lib/%{name} %{name}
+%groupadd -g 169 %{srcname}
+%useradd -u 169 -g %{srcname} -s /bin/sh -d %{_localstatedir}/lib/%{srcname} %{srcname}
 
 %post server
-/sbin/chkconfig --add %{name}
-%service %{name} restart
+/sbin/chkconfig --add %{srcname}
+%service %{srcname} restart
 
 %preun server
 if [ "$1" = "0" ]; then
-	%service -q %{name} stop
-	/sbin/chkconfig --del %{name}
+	%service -q %{srcname} stop
+	/sbin/chkconfig --del %{srcname}
 fi
 
 %postun server
 if [ "$1" = "0" ]; then
-	%userremove %{name}
-	%groupremove %{name}
+	%userremove %{srcname}
+	%groupremove %{srcname}
 fi
 
 %post javadoc
-ln -nfs %{name}-%{version} %{_javadocdir}/%{name}
+ln -nfs %{srcname}-%{version} %{_javadocdir}/%{srcname}
 
 %files
 %defattr(644,root,root,755)
@@ -226,8 +227,8 @@ ln -nfs %{name}-%{version} %{_javadocdir}/%{name}
 
 %files javadoc
 %defattr(644,root,root,755)
-%{_javadocdir}/%{name}-%{version}
-%ghost %{_javadocdir}/%{name}
+%{_javadocdir}/%{srcname}-%{version}
+%ghost %{_javadocdir}/%{srcname}
 
 %files demo
 %defattr(644,root,root,755)
@@ -236,11 +237,11 @@ ln -nfs %{name}-%{version} %{_javadocdir}/%{name}
 %files server
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
-%attr(754,root,root) /etc/rc.d/init.d/%{name}
-%config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
-%dir %{_localstatedir}/lib/%{name}
-%attr(755,hsqldb,hsqldb) %{_localstatedir}/lib/%{name}/data
-%{_localstatedir}/lib/%{name}/lib
-%{_localstatedir}/lib/%{name}/server.properties
-%{_localstatedir}/lib/%{name}/webserver.properties
-%attr(600,hsqldb,hsqldb) %{_localstatedir}/lib/%{name}/sqltool.rc
+%attr(754,root,root) /etc/rc.d/init.d/%{srcname}
+%config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{srcname}
+%dir %{_localstatedir}/lib/%{srcname}
+%attr(755,hsqldb,hsqldb) %{_localstatedir}/lib/%{srcname}/data
+%{_localstatedir}/lib/%{srcname}/lib
+%{_localstatedir}/lib/%{srcname}/server.properties
+%{_localstatedir}/lib/%{srcname}/webserver.properties
+%attr(600,hsqldb,hsqldb) %{_localstatedir}/lib/%{srcname}/sqltool.rc
