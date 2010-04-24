@@ -1,11 +1,7 @@
 # TODO
-# - make build with java 1.6
 # - init script for webserver
 # - pldized init script
 # - set value for Xmx in sysconfig. Default is too low to run hsqldb server.
-
-# does not build with java >= 1.6
-%define	use_jdk	java5-sun
 
 %define		ver	%(echo %{version} | tr . _)
 %define		srcname	hsqldb
@@ -149,7 +145,6 @@ required_jars="\
 	junit \
 	servlet-api \
 "
-export JAVA_HOME=%{java_home}
 CLASSPATH=$(build-classpath $required_jars)
 export CLASSPATH
 
