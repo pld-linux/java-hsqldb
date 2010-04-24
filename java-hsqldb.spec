@@ -224,7 +224,8 @@ ln -nfs %{srcname}-%{version} %{_javadocdir}/%{srcname}
 %files
 %defattr(644,root,root,755)
 %doc doc/hsqldb_lic.txt
-%{_javadir}/*.jar
+%{_javadir}/%{srcname}.jar
+%{_javadir}/%{srcname}-%{version}.jar
 
 %files manual
 %defattr(644,root,root,755)
@@ -243,7 +244,7 @@ ln -nfs %{srcname}-%{version} %{_javadocdir}/%{srcname}
 
 %files -n hsqldb
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/hsqldbRunUtil
 %attr(754,root,root) /etc/rc.d/init.d/%{srcname}
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{srcname}
 %dir %{_localstatedir}/lib/%{srcname}
