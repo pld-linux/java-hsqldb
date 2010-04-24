@@ -14,7 +14,7 @@ Summary:	SQL relational database engine written in Java
 Summary(pl.UTF-8):	Silnik relacyjnych baz danych SQL napisany w Javie
 Name:		java-hsqldb
 Version:	1.8.1.1
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Libraries/Java
 Source0:	http://downloads.sourceforge.net/hsqldb/%{srcname}_%{ver}.zip
@@ -35,6 +35,7 @@ BuildRequires:	java-junit
 BuildRequires:	jpackage-utils >= 0:1.5
 BuildRequires:	rpmbuild(macros) >= 1.556
 BuildRequires:	unzip
+Obsoletes:	hsqldb <= 1.8.1.1-1
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -65,6 +66,7 @@ wiele przykładów demonstracyjnych.
 Summary:	Manual for HSQLDB
 Summary(pl.UTF-8):	Podręcznik do HSQLDB
 Group:		Documentation
+Obsoletes:	hsqldb-manual
 
 %description manual
 Documentation for HSQLDB.
@@ -77,6 +79,7 @@ Summary:	Javadoc for HSQLDB
 Summary(pl.UTF-8):	Dokumentacja javadoc do HSQLDB
 Group:		Documentation
 Requires:	jpackage-utils
+Obsoletes:	hsqldb-javadoc
 
 %description javadoc
 Javadoc for HSQLDB.
@@ -89,6 +92,7 @@ Summary:	Demo for HSQLDB
 Summary(pl.UTF-8):	Pliki demonstracyjne dla HSQLDB
 Group:		Development/Languages/Java
 Requires:	%{name} = %{version}-%{release}
+Obsoletes:	hsqldb-demo
 
 %description demo
 Demonstrations and samples for HSQLDB.
@@ -96,7 +100,7 @@ Demonstrations and samples for HSQLDB.
 %description demo -l pl.UTF-8
 Programy demonstracyjne i przykładowe dla HSQLDB.
 
-%package server
+%package -n hsqldb
 Summary:	HSQLDB server
 Summary(pl.UTF-8):	Serwer HSQLDB
 Group:		Applications/Databases
@@ -112,11 +116,12 @@ Requires:	java(servlet)
 Requires:	rc-scripts
 Provides:	group(hsqldb)
 Provides:	user(hsqldb)
+Obsoletes:	hsqldb-server <= 1.8.1.1-1
 
-%description server
+%description -n hsqldb
 HSQLDB server.
 
-%description server -l pl.UTF-8
+%description -n hsqldb -l pl.UTF-8
 Serwer HSQLDB.
 
 %prep
@@ -193,21 +198,21 @@ ln -s %{srcname}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{srcname} # ghost sym
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%pre server
+%pre -n hsqldb
 %groupadd -g 169 %{srcname}
 %useradd -u 169 -g %{srcname} -s /bin/sh -d %{_localstatedir}/lib/%{srcname} %{srcname}
 
-%post server
+%post -n hsqldb
 /sbin/chkconfig --add %{srcname}
 %service %{srcname} restart
 
-%preun server
+%preun -n hsqldb
 if [ "$1" = "0" ]; then
 	%service -q %{srcname} stop
 	/sbin/chkconfig --del %{srcname}
 fi
 
-%postun server
+%postun -n hsqldb
 if [ "$1" = "0" ]; then
 	%userremove %{srcname}
 	%groupremove %{srcname}
@@ -234,7 +239,7 @@ ln -nfs %{srcname}-%{version} %{_javadocdir}/%{srcname}
 %defattr(644,root,root,755)
 %{_datadir}/%{name}
 
-%files server
+%files -n hsqldb
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/%{srcname}
