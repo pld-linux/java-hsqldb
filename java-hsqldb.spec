@@ -90,7 +90,7 @@ Dokumentacja javadoc do HSQLDB.
 %package demo
 Summary:	Demo for HSQLDB
 Summary(pl.UTF-8):	Pliki demonstracyjne dla HSQLDB
-Group:		Development/Languages/Java
+Group:		Documentation
 Requires:	%{name} = %{version}-%{release}
 Obsoletes:	hsqldb-demo
 
@@ -186,9 +186,9 @@ ln -sf %{_javadir}/servlet-api.jar $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcnam
 # data
 install -d $RPM_BUILD_ROOT%{_localstatedir}/lib/%{srcname}/data
 # demo
-install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/demo
-install demo/*.sh 	$RPM_BUILD_ROOT%{_datadir}/%{name}/demo
-install demo/*.html 	$RPM_BUILD_ROOT%{_datadir}/%{name}/demo
+install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}
+install demo/*.sh 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
+install demo/*.html 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
 
 # javadoc
 install -d $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
@@ -237,7 +237,9 @@ ln -nfs %{srcname}-%{version} %{_javadocdir}/%{srcname}
 
 %files demo
 %defattr(644,root,root,755)
-%{_datadir}/%{name}
+%dir %{_examplesdir}/%{name}
+%{_examplesdir}/%{name}/*.html
+%attr(755,root,root) %{_examplesdir}/%{name}/*.sh
 
 %files -n hsqldb
 %defattr(644,root,root,755)
