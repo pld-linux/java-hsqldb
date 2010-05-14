@@ -24,12 +24,13 @@ Patch1:		%{name}-pld.patch
 Patch2:		%{name}-javadoc.patch
 URL:		http://www.hsqldb.org/
 BuildRequires:	ant
-BuildRequires:	sed >= 4.0
 BuildRequires:	java(servlet)
 BuildRequires:	java-junit
 %{buildrequires_jdk}
 BuildRequires:	jpackage-utils >= 0:1.5
+BuildRequires:	rpm-javaprov
 BuildRequires:	rpmbuild(macros) >= 1.556
+BuildRequires:	sed >= 4.0
 BuildRequires:	unzip
 Obsoletes:	hsqldb <= 1.8.1.1-1
 BuildArch:	noarch
