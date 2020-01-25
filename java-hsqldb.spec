@@ -5,7 +5,6 @@
 
 %define		ver	%(echo %{version} | tr . _)
 %define		srcname	hsqldb
-%include	/usr/lib/rpm/macros.java
 Summary:	SQL relational database engine written in Java
 Summary(pl.UTF-8):	Silnik relacyjnych baz danych SQL napisany w Javie
 Name:		java-hsqldb
