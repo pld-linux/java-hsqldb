@@ -135,9 +135,9 @@ Serwer HSQLDB.
 %prep
 %setup -q -n %{srcname}
 %undos build/build.xml
-%patch0 -p0
-%patch1 -p1
-%patch2 -p1
+%patch -P0 -p0
+%patch -P1 -p1
+%patch -P2 -p1
 
 # remove all binary libs
 rm -f lib/hsqldb.jar
