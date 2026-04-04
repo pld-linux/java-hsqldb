@@ -3,13 +3,15 @@
 # - pldized init script
 # - set value for Xmx in sysconfig. Default is too low to run hsqldb server.
 
+
+%{?use_default_jdk:%use_default_jdk 8}
 %define		ver	%(echo %{version} | tr . _)
 %define		srcname	hsqldb
 Summary:	SQL relational database engine written in Java
 Summary(pl.UTF-8):	Silnik relacyjnych baz danych SQL napisany w Javie
 Name:		java-hsqldb
 Version:	1.8.1.1
-Release:	2
+Release:	3
 License:	BSD-like
 Group:		Libraries/Java
 Source0:	http://downloads.sourceforge.net/hsqldb/%{srcname}_%{ver}.zip
