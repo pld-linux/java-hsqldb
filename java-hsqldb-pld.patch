@@ -47,7 +47,7 @@
  # auth file.  Unfortunately, if auth-file is not specified, this depends
  # upon both (a) $HOME being set; and (b) SqlToolSprayer and SqlTool defaults.
 @@ -347,8 +346,17 @@
-             org.hsqldb.util.SqlToolSprayer --
+             org.hsqldb.util.SqlToolSprayer '--;'
      ;;
      start)
 +        # Check if the service is already running?
@@ -95,7 +95,7 @@
              exit 1
          }
 @@ -423,14 +435,24 @@
-             org.hsqldb.util.SqlToolSprayer -- && {
+             org.hsqldb.util.SqlToolSprayer '--;' && {
              rm -f "$PIDCHECKER_FLAGFILE"
              echo "org.hsqldb.$TARGET_CLASS started with pid `cat $PIDFILE`"
 +            ok

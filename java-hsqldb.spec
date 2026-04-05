@@ -11,7 +11,7 @@ Summary:	SQL relational database engine written in Java
 Summary(pl.UTF-8):	Silnik relacyjnych baz danych SQL napisany w Javie
 Name:		java-hsqldb
 Version:	1.8.1.1
-Release:	3
+Release:	4
 License:	BSD-like
 Group:		Libraries/Java
 Source0:	http://downloads.sourceforge.net/hsqldb/%{srcname}_%{ver}.zip
@@ -152,14 +152,11 @@ cp -a index.html manual
 
 %build
 required_jars="\
-	jsse/jsse \
-	jsse/jnet \
-	jsse/jcert \
-	jdbc-stdext \
 	junit \
 	servlet-api \
 "
 CLASSPATH=$(build-classpath $required_jars)
+# jsse, jdbc-stdext built into JDK since Java 6
 export CLASSPATH
 
 %ant -f build/build.xml hsqldb javadoc
